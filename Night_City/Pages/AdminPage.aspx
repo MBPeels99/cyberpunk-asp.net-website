@@ -46,6 +46,11 @@
                 <asp:LinkButton ID="lnkAddDistrict" runat="server" PostBackUrl="~/Pages/Districts/AddDistrict.aspx" CssClass="add-button">Add New District</asp:LinkButton>
                 <asp:GridView ID="gvDistricts" runat="server" AutoGenerateColumns="False">
                     <Columns>
+                        <asp:TemplateField HeaderText="Image">
+                            <ItemTemplate>
+                                <asp:Image ID="imgDistrict" runat="server" ImageUrl='<%# GetImageUrl(Eval("DistrictName").ToString(), Eval("ImageOne").ToString()) %>' Width="100px" />
+                            </ItemTemplate>
+                        </asp:TemplateField>
                         <asp:BoundField DataField="DistrictId" HeaderText="District ID" />
                         <asp:BoundField DataField="DistrictName" HeaderText="District Name" />
                         <asp:TemplateField>
@@ -94,6 +99,33 @@
                     </Columns>
                 </asp:GridView>
             </asp:Panel>
+
+            <!-- Figures -->
+            <asp:Panel ID="FiguresPanel" runat="server">
+                <asp:LinkButton ID="lnkAddFigure" runat="server" PostBackUrl="~/Pages/Figures/AddFigures.aspx" CssClass="add-button">Add New Figure</asp:LinkButton>
+                <asp:GridView ID="gvFigures" runat="server" AutoGenerateColumns="False">
+                    <Columns>
+                        <asp:TemplateField HeaderText="Image">
+                            <ItemTemplate>
+                                <asp:Image ID="figureImage" runat="server" ImageUrl='<%# (Eval("Image").ToString()) %>' Width="100px" />
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:BoundField DataField="FigureId" HeaderText="Figure ID" />
+                        <asp:BoundField DataField="FullName" HeaderText="Full Name" />
+                        <asp:BoundField DataField="StageName" HeaderText="Stage Name" />
+                        <asp:BoundField DataField="Status" HeaderText="Status" />
+                        <asp:TemplateField>
+                            <ItemTemplate>
+                                <asp:LinkButton ID="lnkViewEmployee" runat="server" CommandArgument='<%# Eval("FigureId") %>' OnClick="ViewUser">View</asp:LinkButton>
+                                <asp:LinkButton ID="lnkEditEmployee" runat="server" CommandArgument='<%# Eval("FigureId") %>' OnClick="EditUser">Edit</asp:LinkButton>
+                                <asp:LinkButton ID="lnkDeleteEmployee" runat="server" CommandArgument='<%# Eval("FigureId") %>' OnClientClick="return confirm('Are you sure you want to delete this employee?');" OnClick="DeleteUser">Delete</asp:LinkButton>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                    </Columns>
+                </asp:GridView>
+            </asp:Panel>
+
+
         </div>
         
     </form>

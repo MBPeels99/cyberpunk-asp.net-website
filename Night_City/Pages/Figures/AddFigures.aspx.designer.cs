@@ -15,15 +15,6 @@ namespace Night_City.Pages.Figures
     {
 
         /// <summary>
-        /// ScriptManager1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.ScriptManager ScriptManager1;
-
-        /// <summary>
         /// form1 control.
         /// </summary>
         /// <remarks>
@@ -31,6 +22,15 @@ namespace Night_City.Pages.Figures
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+
+        /// <summary>
+        /// ScriptManager1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.ScriptManager ScriptManager1;
 
         /// <summary>
         /// txtFullName control.
@@ -96,13 +96,13 @@ namespace Night_City.Pages.Figures
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtStatus;
 
         /// <summary>
-        /// txtGender control.
+        /// ddlGender control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txtGender;
+        protected global::System.Web.UI.WebControls.DropDownList ddlGender;
 
         /// <summary>
         /// txtHairColor control.
@@ -129,7 +129,7 @@ namespace Night_City.Pages.Figures
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Occupation;
+        protected global::System.Web.UI.WebControls.ListBox Occupation;
 
         /// <summary>
         /// Affiliation control.
@@ -138,7 +138,7 @@ namespace Night_City.Pages.Figures
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Affiliation;
+        protected global::System.Web.UI.WebControls.ListBox Affiliation;
 
         /// <summary>
         /// txtKnownFor control.

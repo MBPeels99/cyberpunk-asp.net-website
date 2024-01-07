@@ -3,6 +3,8 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections.Generic;
+using System.Web;
+using System.IO;
 
 namespace Night_City.Utilities.sql
 {
@@ -109,7 +111,9 @@ namespace Night_City.Utilities.sql
         {
             try
             {
-                using (SqlCommand cmd = InitializeCommand(query))
+                string fullQuery = query + "; SELECT SCOPE_IDENTITY();"; // Append the scope identity query
+
+                using (SqlCommand cmd = InitializeCommand(fullQuery)) // Use the full query
                 {
                     foreach (var param in parameters)
                     {
@@ -117,14 +121,14 @@ namespace Night_City.Utilities.sql
                     }
 
                     cmd.Connection.Open();
-                    query += "; SELECT SCOPE_IDENTITY();"; // To get the last inserted ID
                     int newId = Convert.ToInt32(cmd.ExecuteScalar());
                     return newId;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Handle exception
+                // Log the exception for debugging
+                Log($"Error in ExecuteQueryAndGetId: {ex.Message}");
                 return -1; // Indicates an error
             }
         }
@@ -155,6 +159,14 @@ namespace Night_City.Utilities.sql
             }
 
             return userId;
+        }
+
+        private void Log(string message)
+        {
+            string logFile = HttpContext.Current.Server.MapPath("~/Logs/log.txt");
+            string logEntry = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}\n";
+
+            File.AppendAllText(logFile, logEntry);
         }
 
     }

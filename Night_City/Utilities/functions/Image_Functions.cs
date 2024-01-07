@@ -14,25 +14,29 @@ namespace Night_City.Utilities.functions
 
         public Image_Functions() { }
 
-        public string SaveFile(HttpContext context, FileUpload fileUploadControl, string Name)
+        public string SaveFile(HttpContext context, string ImageTheme, FileUpload fileUploadControl, string Name)
         {
             if (fileUploadControl.HasFile)
             {
                 string fileName = $"{Name}{Path.GetExtension(fileUploadControl.FileName)}";
-                string directoryPath = context.Server.MapPath($"~/Pictures/District/{SanitizeDirectoryName(Name)}/DistrictImages/");
+                string directoryPath = context.Server.MapPath($"~/Pictures/{ImageTheme}/{SanitizeDirectoryName(Name)}/");
 
                 // Will Check if directory for district exists
                 Directory.CreateDirectory(directoryPath);
+
                 string savePath = Path.Combine(directoryPath, fileName);
-                return fileName; // Return the file name to be stored in DB
+
+                // Save the file
+                fileUploadControl.SaveAs(savePath);
+
+                // Return the relative path as needed (or just the file name if that's all you need)
+                return $"~/Pictures/{ImageTheme}/{SanitizeDirectoryName(Name)}/{fileName}";
             }
             return null;
         }
 
         private string SanitizeDirectoryName(string directoryName)
         {
-            // Replace invalid characters with an underscore or another valid character
-            // You can expand this method to include other checks as necessary
             foreach (char c in Path.GetInvalidFileNameChars())
             {
                 directoryName = directoryName.Replace(c, '_');

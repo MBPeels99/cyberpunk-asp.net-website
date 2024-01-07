@@ -11,10 +11,10 @@
 
 </head>
 <body>
-    <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
-
+    
     <h1>Add New Figure</h1>
     <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
 
         <div class="form-group">
             <label for="txtFullName">Full Name:</label>
@@ -52,9 +52,15 @@
         </div>
 
         <div class="form-group">
-            <label for="txtGender">Gender:</label>
-            <input type="text" id="txtGender" runat="server" class="form-control" maxlength="10"/>
+            <label for="ddlGender">Gender:</label>
+            <asp:DropDownList ID="ddlGender" runat="server" CssClass="form-control">
+                <asp:ListItem Value="">Select Gender</asp:ListItem>
+                <asp:ListItem Value="Male">Male</asp:ListItem>
+                <asp:ListItem Value="Female">Female</asp:ListItem>
+                <asp:ListItem Value="Other">Other</asp:ListItem>
+            </asp:DropDownList>
         </div>
+
 
         <div class="form-group">
             <label for="txtHairColor">Hair Color:</label>
@@ -67,15 +73,14 @@
         </div>
 
         <label for="Occupation">Occupation:</label>
-        <asp:DropDownList ID="Occupation" runat="server">
-            <!-- Populate from the Occupations table -->
-        </asp:DropDownList>
+        <asp:ListBox ID="Occupation" runat="server" SelectionMode="Multiple"></asp:ListBox>
+
         <button type="button" onclick="promptForNewOccupation();">Add New Occupation</button>
 
         <label for="Affiliation">Affiliation:</label>
-        <asp:DropDownList ID="Affiliation" runat="server">
-            <!-- Populate from the Affiliations table -->
-        </asp:DropDownList>
+        <asp:ListBox ID="Affiliation" runat="server" SelectionMode="Multiple"></asp:ListBox>
+
+        <button type="button" onclick="promptForNewAffiliation();">Add New Affiliation</button>
 
         <div class="form-group">
             <label for="txtKnownFor">Known For:</label>
@@ -109,7 +114,7 @@
 
     <!-- JavaScripts-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src ="../../assests/js/Figures.js"></script>
+    <script src ="../../assets/js/Figures.js"></script>
 
 </body>
 </html>

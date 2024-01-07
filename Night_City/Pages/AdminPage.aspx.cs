@@ -19,6 +19,11 @@ namespace Night_City.Pages
         {
             if (!IsPostBack)
             {
+                DistrictPanel.Visible = true;
+                UserPanel.Visible = false;
+                EmployeePanel.Visible = false;
+                FiguresPanel.Visible = false;
+
                 LoadDistricts(); // default view
             }
         }
@@ -28,12 +33,14 @@ namespace Night_City.Pages
             DistrictPanel.Visible = true;
             UserPanel.Visible = false;
             EmployeePanel.Visible = false;
+            FiguresPanel.Visible = false;
 
             LoadDistricts();
         }
 
         protected void btnFigures_Click(object sender, EventArgs e)
         {
+            FiguresPanel.Visible = true;
             DistrictPanel.Visible = false;
             UserPanel.Visible = false;
             EmployeePanel.Visible = false;
@@ -46,6 +53,7 @@ namespace Night_City.Pages
             DistrictPanel.Visible = false;
             UserPanel.Visible = true;
             EmployeePanel.Visible = false;
+            FiguresPanel.Visible = false;
 
             LoadUsers();
         }
@@ -55,6 +63,7 @@ namespace Night_City.Pages
             DistrictPanel.Visible = false;
             UserPanel.Visible = false;
             EmployeePanel.Visible = true;
+            FiguresPanel.Visible = false;
 
             LoadEmployees();
         }
@@ -67,7 +76,8 @@ namespace Night_City.Pages
 
         private void LoadFigures()
         {
-            // Similar to LoadDistricts, but for figures
+            gvFigures.DataSource = GetFiguresFromDb();
+            gvFigures.DataBind();
         }
 
         private void LoadUsers()
@@ -91,7 +101,7 @@ namespace Night_City.Pages
                 try
                 {
                     conn.Open();
-                    string query = "SELECT DistrictId, DistrictName, Description FROM Districts";
+                    string query = "SELECT DistrictId, DistrictName, ImageOne FROM Districts";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -130,6 +140,29 @@ namespace Night_City.Pages
                 }
             }
             return dtUsers;
+        }
+
+        private DataTable GetFiguresFromDb()
+        {
+            DataTable dtFigures = new DataTable();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT FigureId, FullName, StageName, Status, Image FROM Figures";                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        da.Fill(dtFigures);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions
+                }
+            }
+            return dtFigures;
         }
 
         protected void DeleteDistrict(object sender, EventArgs e)
@@ -183,6 +216,35 @@ namespace Night_City.Pages
             int UserId = Convert.ToInt32(lnkEdit.CommandArgument);
             Response.Redirect($"Users/EditUser.aspx?id={UserId}");
         }
+
+        protected void DeleteFigures(object sender, EventArgs e)
+        {
+            LinkButton lnkDelete = (LinkButton)sender;
+            int FiguresId = Convert.ToInt32(lnkDelete.CommandArgument);
+            // Code to delete the district from the database using districtId
+            // After deletion, reload districts
+            LoadFigures();
+        }
+
+        protected void ViewFigures(object sender, EventArgs e)
+        {
+            LinkButton lnkView = (LinkButton)sender;
+            int FiguresId = Convert.ToInt32(lnkView.CommandArgument);
+            Response.Redirect($"Figures/FiguresDetails.aspx?id={FiguresId}");
+        }
+
+        protected void EditFigures(object sender, EventArgs e)
+        {
+            LinkButton lnkEdit = (LinkButton)sender;
+            int FiguresId = Convert.ToInt32(lnkEdit.CommandArgument);
+            Response.Redirect($"Figures/FiguresDetails.aspx?id= {FiguresId}");
+        }
+
+        protected string GetImageUrl(string districtName, string imageName)
+        {
+            return $"~/Pictures/District/{districtName}/{imageName}";
+        }
+
 
     }
 }

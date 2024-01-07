@@ -74,6 +74,7 @@
     <Content Include="assets\css\admin_page.css" />
     <Content Include="assets\js\explore_page.js" />
     <Content Include="assets\js\Figures.js" />
+    <Content Include="Logs\log.txt" />
     <Content Include="Pages\Districts\AddDistrict.aspx" />
     <Content Include="Pages\AdminPage.aspx" />
     <Content Include="Pages\ConfirmationPage.aspx" />

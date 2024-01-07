@@ -1,0 +1,15 @@
+﻿2024-01-07 23:50:45 - addFigure method started.
+2024-01-07 23:50:45 - File upload detected, attempting to save file.
+2024-01-07 23:50:45 - File saved: ~/Pictures/Figures/Johnny Silverhand/Johnny Silverhand.png
+2024-01-07 23:50:45 - Figure added with ID: -1
+2024-01-07 23:53:59 - addFigure method started.
+2024-01-07 23:53:59 - Figure added with ID: -1
+2024-01-07 23:56:33 - addFigure method started.
+2024-01-07 23:56:33 - File upload detected, attempting to save file.
+2024-01-07 23:56:33 - File saved: ~/Pictures/Figures/Johnny Silverhand/Johnny Silverhand.png
+2024-01-07 23:56:33 - Error in ExecuteQueryAndGetId: Invalid column name 'FigureImage'.
+2024-01-07 23:56:33 - Figure added with ID: -1
+2024-01-07 23:58:32 - addFigure method started.
+2024-01-07 23:58:32 - File upload detected, attempting to save file.
+2024-01-07 23:58:32 - File saved: ~/Pictures/Figures/Johnny Silverhand/Johnny Silverhand.png
+2024-01-07 23:58:32 - Figure added with ID: 1
