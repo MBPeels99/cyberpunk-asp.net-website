@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Confirmation Page</title>
-    <link rel="stylesheet" href="../Styles/styles.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
 </head>
 <body>
     <form id="form1" runat="server">
@@ -20,7 +20,7 @@
                 <asp:Label ID="lblToDate" runat="server" CssClass="yellow-text"></asp:Label>.
             </p>
             <asp:Button ID="btnReturn" runat="server" Text="Return" OnClick="btnReturn_Click" CssClass="button" />
-            <asp:Button ID="btnLogout" runat="server" Text="Logout" OnClick="btnLogout_Click" PostBackUrl="~/Pages/PlanTrip.aspx" CssClass="button" />
+            <asp:Button ID="btnLogout" runat="server" Text="Logout" OnClick="btnLogout_Click" PostBackUrl="~/Pages/SignIn.aspx" CssClass="button" />
         </div>
     </form>
 </body>

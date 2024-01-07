@@ -71,14 +71,19 @@
     <Content Include="App_Data\NightCity_log.ldf">
       <DependentUpon>NightCity.mdf</DependentUpon>
     </Content>
+    <Content Include="assets\css\admin_page.css" />
+    <Content Include="assets\js\explore_page.js" />
+    <Content Include="assets\js\Figures.js" />
+    <Content Include="Pages\Districts\AddDistrict.aspx" />
     <Content Include="Pages\AdminPage.aspx" />
     <Content Include="Pages\ConfirmationPage.aspx" />
     <Content Include="Pages\Default.aspx" />
     <Content Include="Pages\DeleteAccount.aspx" />
+    <Content Include="Pages\Figures\AddFigures.aspx" />
     <Content Include="Pages\SignIn.aspx" />
-    <Content Include="Pages\Profile.aspx" />
+    <Content Include="Pages\ExplorePage.aspx" />
     <Content Include="Pages\UpdateAccount.aspx" />
-    <Content Include="Pages\UserDetails.aspx" />
+    <Content Include="Pages\Users\UserDetails.aspx" />
     <Content Include="Pictures\District\City Center\CityCenter_Images_Back.jpg" />
     <Content Include="Pictures\District\City Center\CityCenter_Images_Map.jpg" />
     <Content Include="Pictures\District\City Center\CityCenter_Images_One.jpg" />
@@ -109,10 +114,18 @@
     <Content Include="Pictures\District\Westbrook\Westbrook_Images_Two.jpg" />
     <Content Include="Pictures\NC_Logo_All.jpg" />
     <Content Include="Pictures\NC_Logo_Black_BG.PNG" />
-    <Content Include="Styles\styles.css" />
+    <Content Include="assets\css\main.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Figure.cs" />
+    <Compile Include="Pages\Districts\AddDistrict.aspx.cs">
+      <DependentUpon>AddDistrict.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Districts\AddDistrict.aspx.designer.cs">
+      <DependentUpon>AddDistrict.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\AdminPage.aspx.cs">
       <DependentUpon>AdminPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -141,6 +154,13 @@
     <Compile Include="Pages\DeleteAccount.aspx.designer.cs">
       <DependentUpon>DeleteAccount.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Figures\AddFigures.aspx.cs">
+      <DependentUpon>AddFigures.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Figures\AddFigures.aspx.designer.cs">
+      <DependentUpon>AddFigures.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SignIn.aspx.cs">
       <DependentUpon>SignIn.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -148,12 +168,12 @@
     <Compile Include="Pages\SignIn.aspx.designer.cs">
       <DependentUpon>SignIn.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Profile.aspx.cs">
-      <DependentUpon>Profile.aspx</DependentUpon>
+    <Compile Include="Pages\ExplorePage.aspx.cs">
+      <DependentUpon>ExplorePage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Pages\Profile.aspx.designer.cs">
-      <DependentUpon>Profile.aspx</DependentUpon>
+    <Compile Include="Pages\ExplorePage.aspx.designer.cs">
+      <DependentUpon>ExplorePage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\UpdateAccount.aspx.cs">
       <DependentUpon>UpdateAccount.aspx</DependentUpon>
@@ -162,14 +182,18 @@
     <Compile Include="Pages\UpdateAccount.aspx.designer.cs">
       <DependentUpon>UpdateAccount.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Pages\UserDetails.aspx.cs">
+    <Compile Include="Pages\Users\UserDetails.aspx.cs">
       <DependentUpon>UserDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Pages\UserDetails.aspx.designer.cs">
+    <Compile Include="Pages\Users\UserDetails.aspx.designer.cs">
       <DependentUpon>UserDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\functions\Image_Functions.cs" />
+    <Compile Include="Utilities\sessions\SessionManager.cs" />
+    <Compile Include="Utilities\sql\SQLHelper.cs" />
+    <Compile Include="Utilities\validation\SignInValidation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

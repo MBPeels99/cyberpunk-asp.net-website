@@ -81,7 +81,7 @@ namespace Night_City.Pages
             UpdateUserInDatabase(userId, fullName, email, phoneNumber, country);
 
             // Redirect to the profile page or any other desired page
-            Response.Redirect("~/Pages/Profile.aspx");
+            Response.Redirect("~/Pages/ExplorePage.aspx");
         }
 
         private User GetUserFromDatabase(string userId)

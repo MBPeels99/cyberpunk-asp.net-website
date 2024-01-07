@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Update Account</title>
-    <link rel="stylesheet" href="../Styles/styles.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
 </head>
 <body>
     <form id="form1" runat="server">

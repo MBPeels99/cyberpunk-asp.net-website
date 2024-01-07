@@ -31,7 +31,7 @@ namespace Night_City.Pages
 
         protected void btnReturn_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Pages/Profile.aspx");
+            Response.Redirect("~/Pages/ExplorePage.aspx");
         }
 
         protected void btnLogout_Click(object sender, EventArgs e)

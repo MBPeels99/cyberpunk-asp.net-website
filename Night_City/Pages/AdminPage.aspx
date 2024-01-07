@@ -4,8 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Admin Dashboard - Night City</title>
-    <link rel="stylesheet" href="../Styles/styles.css" />
-    <link rel="stylesheet" href="../Styles/cyberpunk-css-main/cyberpunk.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/admin_page.css" /> 
+    <link rel="stylesheet" href="../assets/css/cyberpunk-css-main/cyberpunk.css" />
     <!-- Add any other stylesheets or scripts you need for the admin page -->
 </head>
 <body>
@@ -13,6 +14,7 @@
         <div class="cyber-header">
             <h1 class="cyber-h1">Admin Dashboard</h1>
         </div>
+        <!-- Nav Buttons -->
         <div class="nav-buttons-container">
             <asp:LinkButton ID="btnDistricts" runat="server" OnClick="btnDistricts_Click" CssClass="cyber-button bg-red fg-white ">
                 Districts
@@ -35,8 +37,13 @@
                 <span class="glitchtext">Log Out</span>
             </asp:LinkButton>
         </div>
+
+        <!-- Container of Tables -->
         <div id="contentArea" runat="server">
+
+            <!-- Districts -->
             <asp:Panel ID="DistrictPanel" runat="server">
+                <asp:LinkButton ID="lnkAddDistrict" runat="server" PostBackUrl="~/Pages/Districts/AddDistrict.aspx" CssClass="add-button">Add New District</asp:LinkButton>
                 <asp:GridView ID="gvDistricts" runat="server" AutoGenerateColumns="False">
                     <Columns>
                         <asp:BoundField DataField="DistrictId" HeaderText="District ID" />
@@ -51,6 +58,8 @@
                     </Columns>
                 </asp:GridView>
             </asp:Panel>
+
+            <!-- Users -->
             <asp:Panel ID="UserPanel" runat="server">
                 <asp:GridView ID="gvUsers" runat="server" AutoGenerateColumns="False">
                     <Columns>
@@ -67,6 +76,8 @@
                     </Columns>
                 </asp:GridView>
             </asp:Panel>
+
+            <!-- Employees -->
             <asp:Panel ID="EmployeePanel" runat="server">
                 <asp:GridView ID="gvEmployees" runat="server" AutoGenerateColumns="False">
                     <Columns>

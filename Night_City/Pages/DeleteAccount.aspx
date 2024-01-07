@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Delete Account</title>
-    <link rel="stylesheet" href="../Styles/styles.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
 </head>
 <body>
     <form id="form1" runat="server">
@@ -20,7 +20,7 @@
                 <input type="password" id="txtPassword" runat="server" class="form-control" />
             </div>
             <asp:Button ID="btnDelete" runat="server" Text="Delete Account" OnClick="btnDelete_Click" CssClass="button" />
-            <asp:Button ID="btnReturn" runat="server" Text="Return" PostBackUrl="~/Pages/Profile.aspx" CssClass="button" />
+            <asp:Button ID="btnReturn" runat="server" Text="Return" PostBackUrl="~/Pages/ExplorePage.aspx" CssClass="button" />
             <asp:Label ID="lblError" runat="server" Text="" BackColor="Red"></asp:Label>
         </main>
     </form>

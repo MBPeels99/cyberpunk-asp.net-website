@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Cryptography;
@@ -7,14 +8,20 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Night_City.Utilities.sessions;
+using Night_City.Utilities.validation;
 
 namespace Night_City.Pages
 {
-    public partial class PlanTrip : System.Web.UI.Page
+    public partial class SignIn : System.Web.UI.Page
     {
-        string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"E:\\CodingProjects\\Dot Net\\Night_City\\App_Data\\NightCity.mdf\";Integrated Security=True";
+        string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        private SignInValidation _SignInValidation;
+        private SessionManager _SessionManager = new SessionManager();
+        
         protected void Page_Load(object sender, EventArgs e)
         {
+            _SignInValidation = new SignInValidation();
             lblError.Text = "";
             lblError.Visible = true;
         }
@@ -35,85 +42,68 @@ namespace Night_City.Pages
 
         protected void btnConfirmSignIn_Click(object sender, EventArgs e)
         {
-            // Retrieve the values from the textboxes
             string email = txtEmailSignIn.Value;
             string password = txtPassword.Value;
 
-            // Validate the email
             if (!IsValidEmail(email))
             {
-                // Show an error message that email is not valid
                 lblError.Text = "Please enter a valid email.";
+                lblError.Visible = true;
                 return;
             }
 
-            // Hash the provided password to match the stored hashed password
+            AttemptSignIn(email, password);
+        }
+
+        private void AttemptSignIn(string email, string password)
+        {
             string hashedPassword = HashPassword(password);
 
-            // Retrieve the user's information from the database
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                bool result = _SignInValidation.ValidateUser(email, hashedPassword);
+                if (result)
                 {
-                    string query = "SELECT Password,FullName,UserId,IsEmployee FROM Users WHERE Email = @Email";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@Email", email);
-
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    if (reader.Read())
+                    result = _SessionManager.ManageUserSession(email);
+                    if (result)
                     {
-                        // Compare the hashed password from the database with the hashed password the user entered
-                        if (reader["Password"].ToString() == hashedPassword)
-                        {   
-                            //Check if user is employee
-                            bool isEmployee = Convert.ToBoolean(reader["IsEmployee"]);
-
-                            // Create a new cookie for the user's full name and empl
-                            // oyee status
-                            HttpCookie userCookie = new HttpCookie("User");
-                            userCookie["FullName"] = reader["FullName"].ToString();
-                            userCookie["UserId"] = reader["UserId"].ToString();
-                            userCookie["IsEmployee"] = isEmployee.ToString();
-                            userCookie.Expires = DateTime.Now.AddDays(30); // Set the cookie to expire in 30 days
-                            Response.Cookies.Add(userCookie); // Add the cookie to the response
-
-                            // Passwords match, sign-in successful.
-                            // Redirect to the admin page if the user is an employee
-                            if (isEmployee)
-                            {
-                                Response.Redirect("~/Pages/AdminPage.aspx");
-                            }
-                            else
-                            {
-                                Response.Redirect("~/Pages/Profile.aspx");
-                            }
-                        }
-                        else
-                        {
-                            // Passwords do not match, show an error message
-                            lblError.Text = "Incorrect email or password.";
-                            lblError.Visible = true;
-                        }
-                    }
+                        RedirectUserBasedOnSecurityLevel();
+                    } 
                     else
                     {
-                        // Email not found in the database, show an error message
-                        lblError.Text = "Incorrect email or password.";
+                        lblError.Text = "Log In failed. Please Try Again.";
                         lblError.Visible = true;
                     }
-
-                    connection.Close();
+                }
+                else
+                {
+                    lblError.Text = "Incorrect email or password.";
+                    lblError.Visible = true;
                 }
             }
             catch (Exception ex)
             {
-                // Handle the exception (e.g., log it, show an error message, etc.)
                 lblError.Text = "An error occurred while signing in. Please try again.";
                 lblError.Visible = true;
+                // Log the exception
             }
         }
+
+        private void RedirectUserBasedOnSecurityLevel()
+        {
+            if (Session["SecurityLevel"].ToString() == "0")
+            {
+                Response.Redirect("~/Pages/AdminPage.aspx");
+            }
+            else if (Session["SecurityLevel"].ToString() == "-1")
+            {
+                Response.Redirect("~/Pages/ExplorePage.aspx");
+            }
+            // Additional conditions as needed
+        }
+
+
+
 
         protected void btnConfirmSignUp_Click(object sender, EventArgs e)
         {
@@ -176,16 +166,11 @@ namespace Night_City.Pages
 
                     if (userId > 0)
                     {
-                        // Create a new cookie for the user's full name and user ID
-                        HttpCookie userCookie = new HttpCookie("User");
-                        userCookie["FullName"] = fullName;
-                        userCookie["UserId"] = userId.ToString();
-                        // Set the cookie to expire in 30 days
-                        userCookie.Expires = DateTime.Now.AddDays(30);
-                        // Add the cookie to the response
-                        Response.Cookies.Add(userCookie);
+                        // Store user details in session
+                        Session["FullName"] = fullName;
+                        Session["UserId"] = userId;
 
-                        Response.Redirect("~/Pages/Profile.aspx");
+                        Response.Redirect("~/Pages/ExplorePage.aspx");
                     }
                     else
                     {

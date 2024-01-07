@@ -1,0 +1,112 @@
+﻿@font-face {
+    font-family: 'Oxanium';
+    src: url('fonts/Oxanium.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    background-color: #000;
+    color: #0c111a;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #0c111a;
+    padding: 20px;
+    font-size: 68px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.add-button {
+    display: block;
+    margin: 10px 0; /* Adjust the margin to your preference */
+    padding: 8px 16px;
+    background-color: #0c111a; /* Change to your desired button color */
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    .add-button:hover {
+        background-color: #1b75bb; /* Change to your desired hover color */
+        border-color: #fff; /* Optional: change to your desired hover border color */
+    }
+
+.cyber-h1 {
+    font-family: 'Oxanium', sans-serif; /* Fallback to sans-serif if Oxanium is not available */
+    font-size: 2em; /* Adjusted for better scaling */
+    margin: 0.5em 0; /* Adjusted margin for uniformity */
+    color: #1b75bb;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+}
+
+.main {
+    padding: 1em;
+    max-width: 600px; /* Set a max-width for the form */
+    margin: 1em auto; /* Center the form */
+    background-color: #0c111a; /* Background color for the form */
+    border-radius: 8px; /* Rounded corners for the form */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Optional: adds a shadow for depth */
+}
+
+    .main label {
+        display: block;
+        margin: 0.5em 0;
+        color: #fff; /* Set the color for labels */
+    }
+
+    .main input[type="text"],
+    .main textarea,
+    .main input[type="file"] {
+        width: calc(100% - 20px); /* Full width - padding */
+        margin-bottom: 1em;
+        padding: 0.5em;
+        border: 1px solid #333; /* Slightly lighter border for input fields */
+        background-color: #222; /* Darker background for input fields */
+        color: #fff; /* Light text for visibility */
+        border-radius: 4px; /* Match border-radius of the form */
+    }
+
+    .main input[type="file"] {
+        padding: 0; /* Remove padding for file input */
+        border: none; /* Remove border for file input */
+    }
+
+    .main .add-button {
+        display: inline-block; /* Allows for margins */
+        margin-top: 1em;
+        padding: 0.8em 1.6em;
+        background-color: #1b75bb;
+        color: white;
+        border: none; /* No border for buttons */
+        border-radius: 4px;
+        cursor: pointer;
+        text-transform: uppercase; /* Consistency in button text */
+        font-weight: bold; /* Make button text bold */
+    }
+
+        .main .add-button:hover {
+            background-color: #0c111a; /* Darker shade on hover */
+            color: #4eb5f1; /* Lighter color text on hover */
+        }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main {
+        padding: 1em;
+        margin: 1em; /* Slightly more margin on smaller screens */
+    }
+
+    .cyber-h1 {
+        font-size: 1.5em; /* Smaller font size on smaller screens */
+    }
+}

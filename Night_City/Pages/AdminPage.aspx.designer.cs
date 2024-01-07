@@ -87,6 +87,15 @@ namespace Night_City.Pages
         protected global::System.Web.UI.WebControls.Panel DistrictPanel;
 
         /// <summary>
+        /// lnkAddDistrict control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkAddDistrict;
+
+        /// <summary>
         /// gvDistricts control.
         /// </summary>
         /// <remarks>

@@ -7,12 +7,13 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlTypes;
+using System.Configuration;
 
 namespace Night_City.Pages
 {
     public partial class AdminPage : System.Web.UI.Page
     {
-        string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"E:\\CodingProjects\\Dot Net\\Night_City\\App_Data\\NightCity.mdf\";Integrated Security=True";
+        string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -71,23 +72,14 @@ namespace Night_City.Pages
 
         private void LoadUsers()
         {
-            gvUsers.DataSource = GetUsersFromDb(false);
+            gvUsers.DataSource = GetUsersFromDb(-1);
             gvUsers.DataBind();
         }
 
         private void LoadEmployees()
         {
-            gvEmployees.DataSource = GetUsersFromDb(true);
+            gvEmployees.DataSource = GetUsersFromDb(0);
             gvEmployees.DataBind();
-        }
-
-        // Example method to generate a table with View, Edit, Delete buttons
-        private Table GenerateTableWithActions()
-        {
-            Table table = new Table();
-            // Add table headers and other rows dynamically
-            // For each row, add cells and buttons for View, Edit, Delete
-            return table;
         }
 
         private DataTable GetDistrictsFromDb()
@@ -114,7 +106,7 @@ namespace Night_City.Pages
             return dtDistricts;
         }
 
-        private DataTable GetUsersFromDb(bool IsEmployee)
+        private DataTable GetUsersFromDb(int SecurityLevel)
         {
             DataTable dtUsers = new DataTable();
 
@@ -123,10 +115,10 @@ namespace Night_City.Pages
                 try
                 {
                     conn.Open();
-                    string query = "SELECT UserId,FullName,Email FROM Users WHERE IsEmployee = @IsEmployee";
+                    string query = "SELECT UserId,FullName,Email FROM Users WHERE SecurityLevel = @SecurityLevel";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@IsEmployee", IsEmployee);
+                        cmd.Parameters.AddWithValue("@SecurityLevel", SecurityLevel);
 
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
                         da.Fill(dtUsers);
@@ -143,24 +135,30 @@ namespace Night_City.Pages
         protected void DeleteDistrict(object sender, EventArgs e)
         {
             LinkButton lnkDelete = (LinkButton)sender;
-            int districtId = Convert.ToInt32(lnkDelete.CommandArgument);
-            // Code to delete the district from the database using districtId
-            // After deletion, reload districts
-            LoadDistricts();
+            if (int.TryParse(lnkDelete.CommandArgument, out int districtId))
+            {
+                // Code to delete the district from the database using districtId
+                // After deletion, reload districts
+                LoadDistricts();
+            }
+            else
+            {
+                // Handle the case where districtId is not a valid integer
+            }
         }
 
         protected void ViewDistrict(object sender, EventArgs e)
         {
             LinkButton lnkView = (LinkButton)sender;
             int districtId = Convert.ToInt32(lnkView.CommandArgument);
-            Response.Redirect($"ViewDistrict.aspx?id={districtId}");
+            Response.Redirect($"Districts/ViewDistrict.aspx?id={districtId}");
         }
 
         protected void EditDistrict(object sender, EventArgs e)
         {
             LinkButton lnkEdit = (LinkButton)sender;
             int districtId = Convert.ToInt32(lnkEdit.CommandArgument);
-            Response.Redirect($"EditDistrict.aspx?id={districtId}");
+            Response.Redirect($"Districts/EditDistrict.aspx?id={districtId}");
         }
 
         protected void DeleteUser(object sender, EventArgs e)
@@ -176,14 +174,14 @@ namespace Night_City.Pages
         {
             LinkButton lnkView = (LinkButton)sender;
             int UserId = Convert.ToInt32(lnkView.CommandArgument);
-            Response.Redirect($"UserDetails.aspx?id={UserId}");
+            Response.Redirect($"Users/UserDetails.aspx?id={UserId}");
         }
 
         protected void EditUser(object sender, EventArgs e)
         {
             LinkButton lnkEdit = (LinkButton)sender;
             int UserId = Convert.ToInt32(lnkEdit.CommandArgument);
-            Response.Redirect($"EditDistrict.aspx?id={UserId}");
+            Response.Redirect($"Users/EditUser.aspx?id={UserId}");
         }
 
     }

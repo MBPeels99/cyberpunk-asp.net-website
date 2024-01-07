@@ -5,9 +5,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Night City</title>
-    <link rel="stylesheet" href="../Styles/styles.css" />    
-    <link rel="stylesheet" href="../Styles/cyberpunk-css-main/cyberpunk.css" />
-</head>
+    <link rel="stylesheet" href="../assets/css/main.css" />   
+    <link rel="stylesheet" href="../assets/css/cyberpunk-css-main/cyberpunk.css" /></head>
 <body>
     <form id="form1" runat="server">
         <header>
@@ -42,11 +41,19 @@
             <div>
                 <h2>Exploring Night City</h2>
                 <p>Click the button below to explore our wonderful city:</p>
-                <asp:LinkButton ID="btnLoginPage" runat="server" PostBackUrl="~/Pages/SignIn.aspx" CssClass="cyber-button bg-red fg-white">
-                    Start Exploring
-                    <span class="glitchtext">Some edgy txt</span>
-                    <span class="tag">R25</span>
-                </asp:LinkButton>
+                <footer class="footer-buttons">
+                    <asp:LinkButton ID="btnLoginPage" runat="server" PostBackUrl="~/Pages/ExplorePage.aspx" CssClass="cyber-button bg-red fg-white">
+                        Start Exploring
+                        <span class="glitchtext">Some edgy txt</span>
+                        <span class="tag">R25</span>
+                    </asp:LinkButton>
+                    <asp:LinkButton ID="btnSignInUP" runat="server" PostBackUrl="~/Pages/SignIn.aspx" CssClass="cyber-button bg-red fg-white">
+                        Sign In/Up
+                        <span class="glitchtext">Some edgy txt</span>
+                        <span class="tag">R25</span>
+                    </asp:LinkButton>
+                </footer>
+                
             </div>
         </div>
         </main>

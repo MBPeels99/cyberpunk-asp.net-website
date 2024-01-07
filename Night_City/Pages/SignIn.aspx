@@ -1,12 +1,12 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SignIn.aspx.cs" Inherits="Night_City.Pages.PlanTrip" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SignIn.aspx.cs" Inherits="Night_City.Pages.SignIn" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Plan Trip to Night City</title>
-    <link rel="stylesheet" href="../Styles/styles.css" />
-    <link rel="stylesheet" href="../Styles/cyberpunk-css-main/cyberpunk.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/cyberpunk-css-main/cyberpunk.css" />
 </head>
 <body>
      <div class="cyber-background">
@@ -20,6 +20,8 @@
                 </div>
                 <h2>Account Login</h2>
                 <p>Do you have an account with us?</p>
+
+                <!-- Nav Buttons -->
                 <asp:LinkButton ID="btnSignIn" runat="server" OnClick="btnSignIn_Click" CssClass="cyber-button bg-red fg-white cyber-button-inline">
                     Sign In
                     <span class="glitchtext">Some edgy txt</span>
@@ -38,7 +40,7 @@
                     <span class="tag">R25</span>
                 </asp:LinkButton>
 
-            
+                <!-- Sign In -->
                 <div id="divSignIn" runat="server" visible="false">
                     <h2>Sign In</h2>
                     <div class="form-group">
@@ -57,7 +59,8 @@
                         <span class="tag">R25</span>
                     </asp:LinkButton>
                 </div>
-            
+                
+                <!-- Sign Up -->
                 <div id="divSignUp" runat="server" visible="false">
                     <h2>Sign Up</h2>
                     <div class="form-group">
