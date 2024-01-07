@@ -129,6 +129,33 @@ namespace Night_City.Utilities.sql
             }
         }
 
+        public int StoreUserInfoAndGetId(string fullName, string email, string phoneNumber, string country, DateTime dateOfBirth, string hashedPassword)
+        {
+            int userId = 0;
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                string query = "INSERT INTO Users (FullName, Email, PhoneNumber, Country, DateOfBirth, Password) VALUES (@FullName, @Email, @PhoneNumber, @Country, @DateOfBirth, @Password); SELECT SCOPE_IDENTITY()";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@FullName", fullName);
+                command.Parameters.AddWithValue("@Email", email);
+                command.Parameters.AddWithValue("@PhoneNumber", phoneNumber);
+                command.Parameters.AddWithValue("@Country", country);
+                command.Parameters.AddWithValue("@DateOfBirth", dateOfBirth);
+                command.Parameters.AddWithValue("@Password", hashedPassword);
+
+                connection.Open();
+                object result = command.ExecuteScalar();
+                connection.Close();
+
+                if (result != null && int.TryParse(result.ToString(), out int id))
+                {
+                    userId = id;
+                }
+            }
+
+            return userId;
+        }
 
     }
 }

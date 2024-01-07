@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Night_City.Utilities.sessions;
+using Night_City.Utilities.sql;
 using Night_City.Utilities.validation;
 
 namespace Night_City.Pages
@@ -18,6 +19,7 @@ namespace Night_City.Pages
         string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SignInValidation _SignInValidation;
         private SessionManager _SessionManager = new SessionManager();
+        private SQLHelper _SQLHelper = new SQLHelper();
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -45,7 +47,7 @@ namespace Night_City.Pages
             string email = txtEmailSignIn.Value;
             string password = txtPassword.Value;
 
-            if (!IsValidEmail(email))
+            if (!_SignInValidation.IsValidEmail(email))
             {
                 lblError.Text = "Please enter a valid email.";
                 lblError.Visible = true;
@@ -102,9 +104,6 @@ namespace Night_City.Pages
             // Additional conditions as needed
         }
 
-
-
-
         protected void btnConfirmSignUp_Click(object sender, EventArgs e)
         {
             // Retrieve the values from the input fields
@@ -118,106 +117,40 @@ namespace Night_City.Pages
             string confirmPassword = txtConfirmPassword.Value;
 
             // Check if all fields are filled
-            if (string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(email) ||
-                string.IsNullOrEmpty(phoneNumber) || string.IsNullOrEmpty(country) ||
-                string.IsNullOrEmpty(dateOfBirthStr) || string.IsNullOrEmpty(password) ||
-                string.IsNullOrEmpty(confirmPassword))
+            if (!AreSignUpFieldsValid(fullName, email, phoneNumber, country, dateOfBirthStr, password, confirmPassword))
             {
-                // Show an error message that all fields should be filled
-                lblError.Text = $"All fields must be filled. name: {fullName}, phone: {phoneNumber}, DOB: {dateOfBirthStr}, country: {country}, email: {email}, password: {password}";
-                
-                return;
+                return; // Error message is set within AreSignUpFieldsValid
             }
 
             DateTime dateOfBirth = DateTime.Parse(txtDateOfBirth.Value);
+            // Hash the password before storing it into the database
+            string hashedPassword = HashPassword(password);
 
-            // Validate inputs
-            if (!IsValidName(fullName))
+            try
             {
-                // Show an error message that name is not valid
-                lblError.Text = "Please enter a valid name.";
-                
-                return;
-            }
+                // Store the user information in the database and retrieve the user ID
+                int userId = _SQLHelper.StoreUserInfoAndGetId(fullName, email, phoneNumber, country, dateOfBirth, hashedPassword);
 
-            if (!IsValidEmail(email))
-            {
-                // Show an error message that email is not valid
-                lblError.Text = "Please enter a valid email.";
-                return;
-            }
-
-            if (!IsValidPhoneNumber(phoneNumber, ddlCountry.SelectedValue))
-            {
-                // Show an error message that phone number is not valid
-                lblError.Text = "Please enter a valid phone number for your selected country.";
-                return;
-            }
-
-            if (password == confirmPassword)
-            {
-                // Hash the password before storing it into the database
-                string hashedPassword = HashPassword(password);
-
-                try
+                if (userId > 0)
                 {
-                    // Store the user information in the database and retrieve the user ID
-                    int userId = StoreUserInfoAndGetId(fullName, email, phoneNumber, country, dateOfBirth, hashedPassword);
+                    // Store user details in session
+                    Session["FullName"] = fullName;
+                    Session["UserId"] = userId;
 
-                    if (userId > 0)
-                    {
-                        // Store user details in session
-                        Session["FullName"] = fullName;
-                        Session["UserId"] = userId;
-
-                        Response.Redirect("~/Pages/ExplorePage.aspx");
-                    }
-                    else
-                    {
-                        // Error occurred while storing user information
-                        lblError.Text = "An error occurred while creating the account. Please try again.";
-                    }
+                    Response.Redirect("~/Pages/ExplorePage.aspx");
                 }
-                catch (Exception ex)
+                else
                 {
-                    // Handle the exception (e.g., log it, show an error message, etc.)
+                    // Error occurred while storing user information
                     lblError.Text = "An error occurred while creating the account. Please try again.";
                 }
             }
-            else
+            catch (Exception ex)
             {
-                lblError.Text = "Password and password confirmation do not match.";
+                // Handle the exception (e.g., log it, show an error message, etc.)
+                lblError.Text = "An error occurred while creating the account. Please try again.";
             }
         }
-
-        private int StoreUserInfoAndGetId(string fullName, string email, string phoneNumber, string country, DateTime dateOfBirth, string hashedPassword)
-        {
-            int userId = 0;
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string query = "INSERT INTO Users (FullName, Email, PhoneNumber, Country, DateOfBirth, Password) VALUES (@FullName, @Email, @PhoneNumber, @Country, @DateOfBirth, @Password); SELECT SCOPE_IDENTITY()";
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@FullName", fullName);
-                command.Parameters.AddWithValue("@Email", email);
-                command.Parameters.AddWithValue("@PhoneNumber", phoneNumber);
-                command.Parameters.AddWithValue("@Country", country);
-                command.Parameters.AddWithValue("@DateOfBirth", dateOfBirth);
-                command.Parameters.AddWithValue("@Password", hashedPassword);
-
-                connection.Open();
-                object result = command.ExecuteScalar();
-                connection.Close();
-
-                if (result != null && int.TryParse(result.ToString(), out int id))
-                {
-                    userId = id;
-                }
-            }
-
-            return userId;
-        }
-
 
         //Hash Password
         private string HashPassword(string password)
@@ -230,45 +163,42 @@ namespace Night_City.Pages
             }
         }
 
-
-        // Validation method for name
-        private bool IsValidName(string name)
+        private bool AreSignUpFieldsValid(string fullName, string email, string phoneNumber, string country, string dateOfBirthStr, string password, string confirmPassword)
         {
-            // This checks if name is not null or empty and if name contains only letters and white spaces
-            return !string.IsNullOrEmpty(name) && System.Text.RegularExpressions.Regex.IsMatch(name, @"^[a-zA-Z\s]+$");
-        }
-
-        // Validation method for email
-        private bool IsValidEmail(string email)
-        {
-            // This checks if email is not null or empty and if email is in a valid email format
-            return !string.IsNullOrEmpty(email) && System.Text.RegularExpressions.Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-        }
-
-        // Validation method for phone number
-        private bool IsValidPhoneNumber(string phoneNumber, string country)
-        {
-            if (string.IsNullOrEmpty(phoneNumber))
-                return false;
-
-            switch (country)
+            if (string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(email) ||
+                string.IsNullOrEmpty(phoneNumber) || string.IsNullOrEmpty(country) ||
+                string.IsNullOrEmpty(dateOfBirthStr) || string.IsNullOrEmpty(password) ||
+                string.IsNullOrEmpty(confirmPassword))
             {
-                case "USA":
-                    // USA phone numbers are typically 10 digits
-                    return System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^\d{10}$");
-                case "Canada":
-                    // Canadian numbers are also typically 10 digits
-                    return System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^\d{10}$");
-                case "Netherlands":
-                    // Dutch numbers can vary in length, typically 9 to 10 digits
-                    return System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^\d{9,10}$");
-                case "South Africa":
-                    // South African numbers are typically 10 digits
-                    return System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^\d{10}$");
-                default:
-                    return false;
+                lblError.Text = "All fields must be filled.";
+                return false;
             }
-        }
 
+            if (!_SignInValidation.IsValidName(fullName))
+            {
+                lblError.Text = "Please enter a valid name.";
+                return false;
+            }
+
+            if (!_SignInValidation.IsValidEmail(email))
+            {
+                lblError.Text = "Please enter a valid email.";
+                return false;
+            }
+
+            if (!_SignInValidation.IsValidPhoneNumber(phoneNumber, country))
+            {
+                lblError.Text = "Please enter a valid phone number for your selected country.";
+                return false;
+            }
+
+            if (password != confirmPassword)
+            {
+                lblError.Text = "Password and password confirmation do not match.";
+                return false;
+            }
+
+            return true;
+        }
     }
 }

@@ -38,6 +38,45 @@ namespace Night_City.Utilities.validation
 
             return false;
         }
+
+        // Validation method for name
+        public bool IsValidName(string name)
+        {
+            // This checks if name is not null or empty and if name contains only letters and white spaces
+            return !string.IsNullOrEmpty(name) && System.Text.RegularExpressions.Regex.IsMatch(name, @"^[a-zA-Z\s]+$");
+        }
+
+        // Validation method for email
+        public bool IsValidEmail(string email)
+        {
+            // This checks if email is not null or empty and if email is in a valid email format
+            return !string.IsNullOrEmpty(email) && System.Text.RegularExpressions.Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+        }
+
+        // Validation method for phone number
+        public bool IsValidPhoneNumber(string phoneNumber, string country)
+        {
+            if (string.IsNullOrEmpty(phoneNumber))
+                return false;
+
+            switch (country)
+            {
+                case "USA":
+                    // USA phone numbers are typically 10 digits
+                    return System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^\d{10}$");
+                case "Canada":
+                    // Canadian numbers are also typically 10 digits
+                    return System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^\d{10}$");
+                case "Netherlands":
+                    // Dutch numbers can vary in length, typically 9 to 10 digits
+                    return System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^\d{9,10}$");
+                case "South Africa":
+                    // South African numbers are typically 10 digits
+                    return System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^\d{10}$");
+                default:
+                    return false;
+            }
+        }
     }
 
 }
